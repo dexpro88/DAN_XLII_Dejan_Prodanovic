@@ -1,5 +1,4 @@
-﻿using DAN_XLII_Dejan_Prodanovic.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,20 +10,18 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace DAN_XLII_Dejan_Prodanovic
+namespace DAN_XLII_Dejan_Prodanovic.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for AddEmployee.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class AddEmployee : Window
     {
-        public MainWindow()
+        public AddEmployee()
         {
             InitializeComponent();
-            this.DataContext = new MainWindowViewModel(this);
         }
     }
 }
