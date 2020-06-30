@@ -35,8 +35,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -55,6 +64,45 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="EmployeeDataBaseModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EmployeeDataBaseModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LocationFileActions.cs" />
+    <Compile Include="Services\EmployeeService.cs" />
+    <Compile Include="Services\IEmployeeService.cs" />
+    <Compile Include="Services\ILocationService.cs" />
+    <Compile Include="Services\LocationService.cs" />
+    <Compile Include="tblEmployee.cs">
+      <DependentUpon>EmployeeDataBaseModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblGender.cs">
+      <DependentUpon>EmployeeDataBaseModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblLOCATION.cs">
+      <DependentUpon>EmployeeDataBaseModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblSector.cs">
+      <DependentUpon>EmployeeDataBaseModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Validations\Validation.cs" />
+    <Compile Include="ViewModels\AddEmployeeViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\AddEmployee.xaml.cs">
+      <DependentUpon>AddEmployee.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="vwEmployee.cs">
+      <DependentUpon>EmployeeDataBaseModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="vwLOCATION.cs">
+      <DependentUpon>EmployeeDataBaseModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="vwMenager.cs">
+      <DependentUpon>EmployeeDataBaseModel.tt</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -63,10 +111,24 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="EmployeeDataBaseModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EmployeeDataBaseModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeDataBaseModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EmployeeDataBaseModel.edmx</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\AddEmployee.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -86,6 +148,14 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EntityDeploy Include="EmployeeDataBaseModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>EmployeeDataBaseModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="EmployeeDataBaseModel.edmx.diagram">
+      <DependentUpon>EmployeeDataBaseModel.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -94,5 +164,21 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="EmployeeDataBaseModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EmployeeDataBaseModel.Context.cs</LastGenOutput>
+      <DependentUpon>EmployeeDataBaseModel.edmx</DependentUpon>
+    </Content>
+    <Content Include="EmployeeDataBaseModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EmployeeDataBaseModel.edmx</DependentUpon>
+      <LastGenOutput>EmployeeDataBaseModel.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

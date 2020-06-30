@@ -7,6 +7,74 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="6"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="6"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="6"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="6"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="6"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="6"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+            <Button Name="btnAddEmployee" Content="Add Employee" Width="80" Height="20"
+                Command="{Binding AddEmployee, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold"/>
+            <Button Name="btnEditEmployee" Content="Edit Employee" Width="100" Height="20"
+                Command="{Binding EditEmployee, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold"/>
+        </StackPanel>
+        <Grid Grid.Column="1" Grid.Row="3" Height="auto" Width="auto">
+            <DataGrid Name="DataGridResults" ItemsSource="{Binding Employees, UpdateSourceTrigger=PropertyChanged}"
+                      SelectedItem="{Binding Employee,UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" HeadersVisibility="Column"
+                      AutoGenerateColumns="False" HorizontalGridLinesBrush="Black" BorderBrush="Black" Foreground="Black"
+                      FontWeight="Bold">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Registration number" Binding="{Binding RegistrationNumber}"/>
+                    <DataGridTextColumn Header="First name" Binding="{Binding FirstName}"/>
+                    <DataGridTextColumn Header="Last name" Binding="{Binding LastName}"/>
+                    <DataGridTextColumn Header="Location" Binding="{Binding Location}"/>
+                    <DataGridTextColumn Header="Date of birth" Binding="{Binding DateOfBirth}"/>
+                    <DataGridTextColumn Header="Menager" Binding="{Binding MenagerName}"/>
+
+
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Width="80" Height="20"
+                                    Command="{Binding Path=DataContext.DeleteEmployee, RelativeSource= {RelativeSource FindAncestor,
+                                       AncestorType={x:Type DataGrid}},UpdateSourceTrigger=PropertyChanged}" Content="Delete"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Width="80" Height="20"
+                                    Command="{Binding Path=DataContext.EditUser, RelativeSource= {RelativeSource FindAncestor,
+                                       AncestorType={x:Type DataGrid}},UpdateSourceTrigger=PropertyChanged}" Content="Edit"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                </DataGrid.Columns>
+
+
+            </DataGrid>
+        </Grid>
     </Grid>
 </Window>
