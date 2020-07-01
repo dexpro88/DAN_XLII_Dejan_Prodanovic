@@ -60,18 +60,42 @@ AS
 SELECT LocationID, Adress + ', '+ Place + ',' + Country AS Location
 FROM dbo.tblLOCATION
 
-select * from tblEmployee;
+GO
 
-select * from tblGender;
-
-select * from tblLOCATION;
-
-select * from tblSector;
- 
-select * from vwLOCATION;
- 
- 
- 
+GO
 
 
+CREATE VIEW vwMenager
+AS
+
+SELECT EmployeeID, FirstName + ' '+ LastName  AS Menager
+FROM dbo.tblEmployee
+
+GO
+
+GO
+CREATE VIEW vwEmployee
+AS
+
+SELECT   dbo.tblLOCATION.Adress + ', '+dbo.tblLOCATION.Place  + ', ' +dbo.tblLOCATION.Country AS Location,
+         empl.EmployeeID, dbo.tblLOCATION.LocationID, dbo.tblSector.SectorID,dbo.tblGender.GenderID,
+		 empl.MenagerID ,
+		 empl.FirstName, empl.LastName,empl.DateOfBirth,menager.FirstName + ' ' + menager.LastName AS MenagerName,
+         empl.JMBG, empl.RegistrationNumber,empl.TelefonNumber,dbo.tblSector.SectorName,
+		 dbo.tblGender.Gender
+FROM            dbo.tblEmployee empl INNER JOIN
+            dbo.tblSector ON dbo.tblSector.SectorID = empl.SectorID INNER JOIN
+            dbo.tblLOCATION ON empl.LocationID = dbo.tblLOCATION.LocationID INNER JOIN
+			dbo.tblEmployee menager ON empl.MenagerID = menager.EmployeeID INNER JOIN
+			dbo.tblGender ON dbo.tblGender.GenderID = empl.GenderID
+GO
+
+
+
+
+
+ INSERT INTO  tblGender VALUES ('M');
+ INSERT INTO  tblGender VALUES ('F');
+ INSERT INTO  tblGender VALUES ('O');
  
+  --****************
