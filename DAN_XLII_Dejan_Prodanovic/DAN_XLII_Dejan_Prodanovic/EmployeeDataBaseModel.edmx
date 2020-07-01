@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="EmployeeDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="EmployeeDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="tblEmployee">
           <Key>
             <PropertyRef Name="EmployeeID" />
@@ -58,6 +58,7 @@ warning 6002: The table/view 'EmployeeDB.dbo.vwEmployee' does not have a primary
           <Property Name="LocationID" Type="int" Nullable="false" />
           <Property Name="SectorID" Type="int" Nullable="false" />
           <Property Name="GenderID" Type="int" Nullable="false" />
+          <Property Name="MenagerID" Type="int" />
           <Property Name="FirstName" Type="varchar" MaxLength="50" />
           <Property Name="LastName" Type="varchar" MaxLength="50" />
           <Property Name="DateOfBirth" Type="date" />
@@ -84,7 +85,7 @@ warning 6002: The table/view 'EmployeeDB.dbo.vwMenager' does not have a primary 
             <PropertyRef Name="EmployeeID" />
           </Key>
           <Property Name="EmployeeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Menager" Type="varchar" MaxLength="102" />
+          <Property Name="Menager" Type="varchar" MaxLength="101" />
         </EntityType>
         <Association Name="FK__tblEmploy__Gende__403A8C7D">
           <End Role="tblGender" Type="Self.tblGender" Multiplicity="0..1" />
@@ -146,6 +147,7 @@ warning 6002: The table/view 'EmployeeDB.dbo.vwMenager' does not have a primary 
     [vwEmployee].[LocationID] AS [LocationID], 
     [vwEmployee].[SectorID] AS [SectorID], 
     [vwEmployee].[GenderID] AS [GenderID], 
+    [vwEmployee].[MenagerID] AS [MenagerID], 
     [vwEmployee].[FirstName] AS [FirstName], 
     [vwEmployee].[LastName] AS [LastName], 
     [vwEmployee].[DateOfBirth] AS [DateOfBirth], 
@@ -186,8 +188,7 @@ warning 6002: The table/view 'EmployeeDB.dbo.vwMenager' does not have a primary 
             <End Role="tblEmployee" EntitySet="tblEmployee" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="EmployeeDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -259,6 +260,7 @@ warning 6002: The table/view 'EmployeeDB.dbo.vwMenager' does not have a primary 
           <Property Name="TelefonNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="SectorName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Gender" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="MenagerID" Type="Int32" />
         </EntityType>
         <EntityType Name="vwLOCATION">
           <Key>
@@ -272,7 +274,7 @@ warning 6002: The table/view 'EmployeeDB.dbo.vwMenager' does not have a primary 
             <PropertyRef Name="EmployeeID" />
           </Key>
           <Property Name="EmployeeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Menager" Type="String" MaxLength="102" FixedLength="false" Unicode="false" />
+          <Property Name="Menager" Type="String" MaxLength="101" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK__tblEmploy__Gende__403A8C7D">
           <End Role="tblGender" Type="Self.tblGender" Multiplicity="0..1" />
@@ -399,6 +401,7 @@ warning 6002: The table/view 'EmployeeDB.dbo.vwMenager' does not have a primary 
           <EntitySetMapping Name="vwEmployees">
             <EntityTypeMapping TypeName="EmployeeDBModel.vwEmployee">
               <MappingFragment StoreEntitySet="vwEmployee">
+                <ScalarProperty Name="MenagerID" ColumnName="MenagerID" />
                 <ScalarProperty Name="Location" ColumnName="Location" />
                 <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
                 <ScalarProperty Name="LocationID" ColumnName="LocationID" />

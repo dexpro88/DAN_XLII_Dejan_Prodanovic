@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DAN_XLII_Dejan_Prodanovic.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,8 @@ namespace DAN_XLII_Dejan_Prodanovic.Validations
 {
     class Validation
     {
+        static IEmployeeService employeeService = new EmployeeService();
+
         public static bool JMBGisValid(string JMBG)
         {
 
@@ -90,7 +93,17 @@ namespace DAN_XLII_Dejan_Prodanovic.Validations
             return true;
         }
 
-        public static bool IsRegisterNumberValid(string registrationNumber)
+        public static bool JMBGIsUnique(string JMBG)
+        {
+            tblEmployee employee = employeeService.GetEmployeeByJMBG(JMBG);
+
+            if (employee == null)
+            {
+                return true;
+            }
+            return false;
+        }
+        public static bool RegisterNumberIsValid(string registrationNumber)
         {
             if (registrationNumber.Length != 9)
                 return false;
@@ -99,6 +112,31 @@ namespace DAN_XLII_Dejan_Prodanovic.Validations
             for (int i = 0; i < registrationNumber.Length; i++)
             {
                 if (!Char.IsNumber(registrationNumber, i))
+                    return false;
+            }
+            return true;
+        }
+
+        public static bool RegNumberIsUnique(string registrationNumber)
+        {
+            tblEmployee employee = employeeService.GetEmployeeByJMBG(registrationNumber);
+
+            if (employee == null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public static bool TelfonNumberValid(string telefonNumber)
+        {
+            if (telefonNumber.Length != 9)
+                return false;
+
+
+            for (int i = 0; i < telefonNumber.Length; i++)
+            {
+                if (!Char.IsNumber(telefonNumber, i))
                     return false;
             }
             return true;

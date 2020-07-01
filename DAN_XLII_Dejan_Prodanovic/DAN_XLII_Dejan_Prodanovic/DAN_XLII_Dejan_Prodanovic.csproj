@@ -72,9 +72,13 @@
     </Compile>
     <Compile Include="LocationFileActions.cs" />
     <Compile Include="Services\EmployeeService.cs" />
+    <Compile Include="Services\GenderService.cs" />
     <Compile Include="Services\IEmployeeService.cs" />
+    <Compile Include="Services\IGenderService.cs" />
     <Compile Include="Services\ILocationService.cs" />
+    <Compile Include="Services\ISectorService.cs" />
     <Compile Include="Services\LocationService.cs" />
+    <Compile Include="Services\SectorService.cs" />
     <Compile Include="tblEmployee.cs">
       <DependentUpon>EmployeeDataBaseModel.tt</DependentUpon>
     </Compile>

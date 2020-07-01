@@ -28,5 +28,6 @@ namespace DAN_XLII_Dejan_Prodanovic
         public string TelefonNumber { get; set; }
         public string SectorName { get; set; }
         public string Gender { get; set; }
+        public Nullable<int> MenagerID { get; set; }
     }
 }

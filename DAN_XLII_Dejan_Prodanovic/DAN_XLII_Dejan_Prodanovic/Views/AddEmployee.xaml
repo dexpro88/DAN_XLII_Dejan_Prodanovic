@@ -35,6 +35,8 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="6"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="6"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
         <Label Grid.Column="1" Grid.Row="1" Name="lblFirstName" Content="First name:" Padding="0" HorizontalAlignment="Right"/>
@@ -42,8 +44,10 @@
         <Label Grid.Column="1" Grid.Row="5" Name="lblJMBG" Content="JMBG:" Padding="0" HorizontalAlignment="Right"/>
         <Label Grid.Column="1" Grid.Row="7" Name="lblRegistrationNumber" Content="Registration Number:" Padding="0" HorizontalAlignment="Right"/>
         <Label Grid.Column="1" Grid.Row="9" Name="lblTelefonNumber" Content="Telefon number:" Padding="0" HorizontalAlignment="Right"/>
-        <Label Grid.Column="1" Grid.Row="11" Name="lblMenager" Content="Menager:" Padding="0" HorizontalAlignment="Right"/>
-        <Label Grid.Column="1" Grid.Row="13" Name="lblLocation" Content="Location:" Padding="0" HorizontalAlignment="Right"/>
+        <Label Grid.Column="1" Grid.Row="11" Name="lblLocation" Content="Location:" Padding="0" HorizontalAlignment="Right"/>
+        <Label Grid.Column="1" Grid.Row="13" Name="lblMenager" Content="Menager:" Padding="0" HorizontalAlignment="Right"/>
+        <Label Grid.Column="1" Grid.Row="15" Name="lblSector" Content="Sector:" Padding="0" HorizontalAlignment="Right"/>
+
         <!--<Label Grid.Column="5" Grid.Row="1" Name="lblValidName" Content="*" Padding="0" HorizontalAlignment="Left" 
                Foreground="#FFFB0000" FontSize="20"/>
         <Label Grid.Column="5" Grid.Row="3" Name="lblValidLastName" Content="*" Padding="0" HorizontalAlignment="Left" 
@@ -67,28 +71,27 @@
         <ComboBox Grid.Column="3" Grid.Row="11" Name="cmbLocation" Height="20" Width="200" DisplayMemberPath="Location"
                  IsEditable="True" ItemsSource="{Binding LocationList, UpdateSourceTrigger=PropertyChanged}"
                   SelectedItem="{Binding SelctedLocation, UpdateSourceTrigger=PropertyChanged}"/>
-        <ComboBox Grid.Column="3" Grid.Row="13" Name="cmbMenager" Height="20" Width="200" DisplayMemberPath="Location"
-                 IsEditable="True" ItemsSource="{Binding LocationList, UpdateSourceTrigger=PropertyChanged}"
-                  SelectedItem="{Binding SelctedLocation, UpdateSourceTrigger=PropertyChanged}"/>
-        <DatePicker Grid.Column="3" Grid.Row="15" Margin="10" SelectedDate="{Binding StartDate}" />
+        <ComboBox Grid.Column="3" Grid.Row="13" Name="cmbMenager" Height="20" Width="200" DisplayMemberPath="Menager"
+                 IsEditable="True" ItemsSource="{Binding PotentialMenagers, UpdateSourceTrigger=PropertyChanged}"
+                  SelectedItem="{Binding SelectedMenager, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Column="3" Grid.Row="15" Name="txtSector" Height="20" Width="200"
+                 Text="{Binding Sector, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <StackPanel Grid.Column="3" Grid.Row="17" Orientation="Horizontal" Margin="10">
+        <DatePicker Grid.Column="3" Grid.Row="17" Margin="10" SelectedDate="{Binding StartDate}" />
+
+        <StackPanel Grid.Column="3" Grid.Row="19" Orientation="Horizontal" Margin="10">
             <RadioButton Width="50" Content="male" Command="{Binding Path=ChooseGender}"
                 Name="cbMale" CommandParameter="{Binding ElementName=cbMale, Path=Content}" IsChecked="True"></RadioButton>
             <RadioButton Width="60" Content="female" Command="{Binding Path=ChooseGender}"
                 Name="cbFemale" CommandParameter="{Binding ElementName=cbFemale, Path=Content}"></RadioButton>
+            <RadioButton Width="60" Content="other" Command="{Binding Path=ChooseGender}"
+                Name="cbOther" CommandParameter="{Binding ElementName=cbOther, Path=Content}"></RadioButton>
         </StackPanel>
 
-        <StackPanel  Grid.Column="3" Grid.Row="19" Orientation="Horizontal" Margin="10" >
-            <CheckBox Width="130" Name="cbForLife" Content="make IDCard for life" Command="{Binding Path=ChooseForLife}"
-                    CommandParameter="{Binding ElementName=cbForLife, Path=IsChecked}">
-            </CheckBox>
-
-        </StackPanel>
-
-        <Button Grid.Column="3" Grid.Row="17" Name="btnSave" Content="Save" Height="20" Width="70" HorizontalAlignment="Left"
+        
+        <Button Grid.Column="3" Grid.Row="21" Name="btnSave" Content="Save" Height="20" Width="70" HorizontalAlignment="Left"
                 Command="{Binding Save, UpdateSourceTrigger=PropertyChanged}"/>
-        <Button Grid.Column="3" Grid.Row="17" Name="btnClose" Content="Close" Height="20" Width="70" HorizontalAlignment="Right"
+        <Button Grid.Column="3" Grid.Row="21" Name="btnClose" Content="Close" Height="20" Width="70" HorizontalAlignment="Right"
                 Command="{Binding Close, UpdateSourceTrigger=PropertyChanged}"/>
     </Grid>
 </Window>

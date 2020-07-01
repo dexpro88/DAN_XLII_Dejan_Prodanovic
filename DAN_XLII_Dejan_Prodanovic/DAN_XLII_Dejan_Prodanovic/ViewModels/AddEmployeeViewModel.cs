@@ -16,7 +16,8 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
         AddEmployee addEmployee;
         ILocationService locationService;
         IEmployeeService employeeService;
-
+        IGenderService genderService;
+        ISectorService sectorService;
 
         #region Constructor
         public AddEmployeeViewModel(AddEmployee addEmployeeOpen)
@@ -27,10 +28,15 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
 
             locationService = new LocationService();
             employeeService = new EmployeeService();
+            genderService = new GenderService();
+            sectorService = new SectorService();
 
             LocationList = locationService.GetAllLocations().ToList();
             LocationList.OrderByDescending(x => x.Location);
             LocationList.Reverse();
+
+            PotentialMenagers = employeeService.GetAllPotentialMenagers();
+           
         }
 
 
@@ -65,6 +71,44 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
             }
         }
 
+        private vwMenager selectedMenager;
+        public vwMenager SelectedMenager
+        {
+            get
+            {
+                return selectedMenager;
+            }
+            set
+            {
+                selectedMenager = value;
+                OnPropertyChanged("SelectedMenager");
+            }
+        }
+
+        private string sector;
+        public string Sector
+        {
+            get
+            {
+                return sector;
+            }
+            set
+            {
+                sector = value;
+                OnPropertyChanged("Sector");
+            }
+        }
+
+        private string gender = "male";
+        public string Gender
+        {
+            get { return gender; }
+            set
+            {
+                gender = value;
+                OnPropertyChanged("Gender");
+            }
+        }
 
         private List<vwLOCATION> locationList;
         public List<vwLOCATION> LocationList
@@ -80,15 +124,27 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
             }
         }
 
-        private string gender = "male";
-        public string Gender
+        private List<vwMenager> potentialMenagers;
+        public List<vwMenager> PotentialMenagers
         {
-            get { return gender; }
+            get
+            {
+                return potentialMenagers;
+            }
             set
             {
-                gender = value;
-                OnPropertyChanged("Gender");
+                potentialMenagers = value;
+                OnPropertyChanged("PotentialMenagers");
             }
+        }
+
+       
+
+        private DateTime _startDate = DateTime.Now;
+        public DateTime StartDate
+        {
+            get { return _startDate; }
+            set { _startDate = value; OnPropertyChanged("StartDate"); }
         }
 
 
@@ -126,9 +182,46 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
             try
             {
                 employee.LocationID = SelctedLocation.LocationID;
-                employeeService.AddEmployee(employee);
+                employee.DateOfBirth = StartDate;
+                employee.MenagerID = selectedMenager.EmployeeID;
+                string genderForDB;
+               
+                if (Gender.Equals("male"))
+                {
+                    genderForDB = "M";
+                }
+                else if (Gender.Equals("female"))
+                {
+                    genderForDB = "F";
+                }
+                else
+                {  
+                    genderForDB = "O";
+                }
+
+                tblGender gender = genderService.GetGenderByName(genderForDB);
+                tblSector sectorDB = sectorService.GetSectorByName(Sector);
+
+                if (sectorDB == null)
+                {
+                    MessageBox.Show("SECTOR RADI NESTO");
+                    sectorDB = new tblSector();
+                    sectorDB.SectorName = Sector;
+                    sectorDB = sectorService.AddSector(sectorDB);
+                    employee.SectorID = sectorDB.SectorID;
+                }
+                else
+                {
+                    employee.SectorID = sectorDB.SectorID;
+                    MessageBox.Show(employee.SectorID.ToString());
+                }
+
+                employee.GenderID = gender.GenderID;
 
                 isUpdateUser = true;
+            
+
+               //employeeService.AddEmployee(employee);
 
                 addEmployee.Close();
 

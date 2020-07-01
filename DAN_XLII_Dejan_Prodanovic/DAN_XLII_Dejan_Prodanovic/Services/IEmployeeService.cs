@@ -9,9 +9,11 @@ namespace DAN_XLII_Dejan_Prodanovic.Services
     interface IEmployeeService
     {
         List<vwEmployee> GetAllEmployees();
+        List<vwMenager> GetAllPotentialMenagers();
         vwEmployee AddEmployee(vwEmployee employee);
-        //List<tblEmployee> GetAllEmployees();
+        tblEmployee GetEmployeeByJMBG(string JMBG);
+        tblEmployee GetEmployeeByRegnumber(string registrationNumber);
         void DeleteEmployee(int employeeID);
-        //List<EmployeeToPresent> GetAllEmployeesToPresent();
+       
     }
 }

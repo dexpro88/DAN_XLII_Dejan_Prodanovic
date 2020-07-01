@@ -61,21 +61,19 @@ namespace DAN_XLII_Dejan_Prodanovic.Services
                 using (EmployeeDBEntities context = new EmployeeDBEntities())
                 {
                     tblEmployee newEmployee = new tblEmployee();
-                    if (newEmployee!=null)
-                    {
-                        MessageBox.Show("RADI");
-
-                    }
+                    
                     newEmployee.FirstName = employee.FirstName;
                     newEmployee.LastName = employee.LastName;
                     newEmployee.JMBG = employee.JMBG;
                     newEmployee.RegistrationNumber = employee.RegistrationNumber;
                     newEmployee.TelefonNumber = employee.TelefonNumber;
                     newEmployee.LocationID = employee.LocationID;
-                    //newEmployee.SectorID = employee.SectorID;
-                    //newEmployee.GenderID = employee.GenderID;
-                    //newEmployee.DateOfBirth = DateTime.Now;
-                    //newEmployee.MenagerID = DateTime.Now;
+                    newEmployee.DateOfBirth = employee.DateOfBirth;
+                    newEmployee.MenagerID = employee.MenagerID;
+                    newEmployee.GenderID = employee.GenderID;
+                    newEmployee.SectorID = employee.SectorID;
+
+
 
 
                     context.tblEmployees.Add(newEmployee);
@@ -97,19 +95,68 @@ namespace DAN_XLII_Dejan_Prodanovic.Services
             }
         }
 
-        //public List<EmployeeToPresent> GetAllEmployeesToPresent()
-        //{
-        //    List<EmployeeToPresent> employeesToPresents = new List<EmployeeToPresent>();
-        //    List<tblEmployee> employees = GetAllEmployees();
-        //    EmployeeToPresent empToPresent = new EmployeeToPresent();
+        public List<vwMenager> GetAllPotentialMenagers()
+        {
+            try
+            {
+                using (EmployeeDBEntities context = new EmployeeDBEntities())
+                {
+                    List<vwMenager> list = new List<vwMenager>();
+                    list = (from x in context.vwMenagers where !x.Menager.Equals(" ") select x).ToList();
+                    return list;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Exception" + ex.Message.ToString());
+                return null;
+            }
+        }
 
-        //    foreach (var employee in employees)
-        //    {
-        //        empToPresent.FirstName = employee.FirstName;
-        //        empToPresent.FirstName = employee.LastName;
-        //        empToPresent.FirstName = employee.FirstName;
-        //        empToPresent.FirstName = employee.FirstName;
-        //    }
-        //}
+        public tblEmployee GetEmployeeByJMBG(string JMBG)
+        {
+            try
+            {
+                using (EmployeeDBEntities context = new EmployeeDBEntities())
+                {
+                    tblEmployee emoloyee = (from e in context.tblEmployees where e.JMBG.Equals(JMBG) select e).First();
+
+
+                    return emoloyee;
+
+                    //FileLoging fileLog = FileLoging.Instance();
+                    //fileLog.LogDeleteUserToFile(userToDelete);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Exception" + ex.Message.ToString());
+                return null;
+            }
+        }
+
+        public tblEmployee GetEmployeeByRegnumber(string registrationNumber)
+        {
+            try
+            {
+                using (EmployeeDBEntities context = new EmployeeDBEntities())
+                {
+                    tblEmployee emoloyee = (from e in context.tblEmployees where e.JMBG.Equals(registrationNumber) select e).First();
+
+
+                    return emoloyee;
+
+                    //FileLoging fileLog = FileLoging.Instance();
+                    //fileLog.LogDeleteUserToFile(userToDelete);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Exception" + ex.Message.ToString());
+                return null;
+            }
+        }
+
+        
     }
 }
