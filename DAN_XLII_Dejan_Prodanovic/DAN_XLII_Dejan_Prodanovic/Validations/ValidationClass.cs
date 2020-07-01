@@ -103,6 +103,21 @@ namespace DAN_XLII_Dejan_Prodanovic.Validations
             }
             return false;
         }
+
+        public static bool JMBGIsUniqueForEditWindow(string JMBG,vwEmployee employeeToEdit)
+        {
+            if (JMBG.Equals(employeeToEdit.JMBG))
+            {
+                return true;
+            }
+            tblEmployee employee = employeeService.GetEmployeeByJMBG(JMBG);
+
+            if (employee == null)
+            {
+                return true;
+            }
+            return false;
+        }
         public static bool RegisterNumberIsValid(string registrationNumber)
         {
             if (registrationNumber.Length != 9)
@@ -117,9 +132,27 @@ namespace DAN_XLII_Dejan_Prodanovic.Validations
             return true;
         }
 
+         
+
         public static bool RegNumberIsUnique(string registrationNumber)
         {
-            tblEmployee employee = employeeService.GetEmployeeByJMBG(registrationNumber);
+            tblEmployee employee = employeeService.GetEmployeeByRegnumber(registrationNumber);
+
+            if (employee == null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public static bool RegNumberIsUniqueForEdit(string registrationNumber,vwEmployee employeeToEdit)
+        {
+
+            if (registrationNumber.Equals(employeeToEdit.RegistrationNumber))
+            {
+                return true;
+            }
+            tblEmployee employee = employeeService.GetEmployeeByRegnumber(registrationNumber);
 
             if (employee == null)
             {

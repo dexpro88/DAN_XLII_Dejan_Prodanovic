@@ -71,7 +71,7 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Width="80" Height="20"
-                                    Command="{Binding Path=DataContext.EditUser, RelativeSource= {RelativeSource FindAncestor,
+                                    Command="{Binding Path=DataContext.EditEmployee, RelativeSource= {RelativeSource FindAncestor,
                                        AncestorType={x:Type DataGrid}},UpdateSourceTrigger=PropertyChanged}" Content="Edit"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

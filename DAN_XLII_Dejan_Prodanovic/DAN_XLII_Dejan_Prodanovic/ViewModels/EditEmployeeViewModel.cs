@@ -8,26 +8,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace DAN_XLII_Dejan_Prodanovic.ViewModels
 {
-    class AddEmployeeViewModel:ViewModelBase
+    class EditEmployeeViewModel : ViewModelBase
     {
-        AddEmployee addEmployee;
+        EditEmployee editEmployee;
         ILocationService locationService;
         IEmployeeService employeeService;
         IGenderService genderService;
         ISectorService sectorService;
 
         #region Constructor
-        public AddEmployeeViewModel(AddEmployee addEmployeeOpen)
+        public EditEmployeeViewModel(EditEmployee editEmployeeOpen,vwEmployee employeeEdit)
         {
+            editEmployee = editEmployeeOpen;
+            selectedMenager = new vwMenager();
+            employee = employeeEdit;
             selctedLocation = new vwLOCATION();
             selectedMenager = new vwMenager();
-            employee = new vwEmployee();
-            addEmployee = addEmployeeOpen;
+            //selectedMenager.Menager = employee.MenagerName;
+            StartDate = (DateTime)employee.DateOfBirth;
+            Sector = employee.SectorName;
 
             locationService = new LocationService();
             employeeService = new EmployeeService();
@@ -38,12 +41,8 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
             LocationList.OrderByDescending(x => x.Location);
             LocationList.Reverse();
 
-           
+            PotentialMenagers = employeeService.GetAllPotentialMenagersForEditWindow(employeeEdit.EmployeeID);
 
-            PotentialMenagers = employeeService.GetAllPotentialMenagers();
-
-
-           
         }
 
 
@@ -145,7 +144,7 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
             }
         }
 
-       
+
 
         private DateTime _startDate = DateTime.Now;
         public DateTime StartDate
@@ -195,7 +194,7 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
                     return;
                 }
 
-                if (!ValidationClass.JMBGIsUnique(employee.JMBG))
+                if (!ValidationClass.JMBGIsUniqueForEditWindow(employee.JMBG,employee))
                 {
                     MessageBox.Show("JMBG  already exists in database");
                     return;
@@ -206,7 +205,7 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
                     MessageBox.Show("Registration number  is not valid");
                     return;
                 }
-                if (!ValidationClass.RegNumberIsUnique(employee.RegistrationNumber))
+                if (!ValidationClass.RegNumberIsUniqueForEdit(employee.RegistrationNumber,employee))
                 {
                     MessageBox.Show("Registration number  already exists in database");
                     return;
@@ -222,14 +221,17 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
                 {
                     vwMenager menagerDB = employeeService.GetMenagerByName(" ");
                     employee.MenagerID = menagerDB.EmployeeID;
+                    MessageBox.Show(employee.MenagerName.ToString());
                 }
                 else
                 {
-                   employee.MenagerID = selectedMenager.EmployeeID;
+                    employee.MenagerID = selectedMenager.EmployeeID;
+                    MessageBox.Show(employee.MenagerName.ToString());
+
                 }
-              
+
                 string genderForDB;
-               
+
                 if (Gender.Equals("male"))
                 {
                     genderForDB = "M";
@@ -239,7 +241,7 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
                     genderForDB = "F";
                 }
                 else
-                {  
+                {
                     genderForDB = "O";
                 }
 
@@ -248,7 +250,7 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
 
                 if (sectorDB == null)
                 {
-                  
+
                     sectorDB = new tblSector();
                     sectorDB.SectorName = Sector;
                     sectorDB = sectorService.AddSector(sectorDB);
@@ -258,7 +260,7 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
                 else
                 {
                     employee.SectorID = sectorDB.SectorID;
-                  
+
                 }
 
                 employee.GenderID = gender.GenderID;
@@ -266,9 +268,9 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
                 isUpdateUser = true;
 
 
-                employeeService.AddEmployee(employee);
+                employeeService.EditEmployee(employee);
 
-                addEmployee.Close();
+                editEmployee.Close();
 
             }
             catch (Exception ex)
@@ -280,7 +282,7 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
         private bool CanSaveExecute()
         {
 
-            if (String.IsNullOrEmpty(Employee.FirstName) || String.IsNullOrEmpty(Employee.FirstName) || 
+            if (String.IsNullOrEmpty(Employee.FirstName) || String.IsNullOrEmpty(Employee.FirstName) ||
                 String.IsNullOrEmpty(Employee.JMBG) || String.IsNullOrEmpty(Employee.RegistrationNumber) ||
                 String.IsNullOrEmpty(Employee.TelefonNumber) || String.IsNullOrEmpty(SelctedLocation.Location) ||
                 String.IsNullOrEmpty(Sector)
@@ -312,7 +314,7 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
         {
             try
             {
-                addEmployee.Close();
+                editEmployee.Close();
             }
             catch (Exception ex)
             {

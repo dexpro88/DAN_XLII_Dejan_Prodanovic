@@ -32,6 +32,13 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
                 LocationFileActions.AddLocationsToDatabase();
             }
 
+            vwMenager firstMenager = employeeService.GetMenagerByName(" ");
+
+            if (firstMenager == null)
+            {
+                employeeService.AddEmptyMenager();
+            }
+
             Employees = employeeService.GetAllEmployees();
         }
         #endregion
@@ -165,6 +172,51 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
         private bool CanAddEmployeeExecute()
         {
             return true;
+        }
+
+        private ICommand editEmployee;
+        public ICommand EditEmployee
+        {
+            get
+            {
+                if (editEmployee == null)
+                {
+                    editEmployee = new RelayCommand(param => EditEmployeeExecute(), param => CanEditEmployeeExecute());
+                }
+                return editEmployee;
+            }
+        }
+
+        private void EditEmployeeExecute()
+        {
+            try
+            {
+                if (Employee != null)
+                {
+                    EditEmployee editEmployee = new EditEmployee(Employee);
+                    editEmployee.ShowDialog();
+
+                     
+                    Employees = employeeService.GetAllEmployees().ToList();
+                 
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+        private bool CanEditEmployeeExecute()
+        {
+            if (Employee == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         #endregion
