@@ -70,6 +70,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EmployeeDataBaseModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="EventClass.cs" />
+    <Compile Include="FileLogging.cs" />
     <Compile Include="LocationFileActions.cs" />
     <Compile Include="Services\EmployeeService.cs" />
     <Compile Include="Services\GenderService.cs" />
@@ -91,6 +93,7 @@
     <Compile Include="tblSector.cs">
       <DependentUpon>EmployeeDataBaseModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="TextToFileEventArgs.cs" />
     <Compile Include="Validations\ValidationClass.cs" />
     <Compile Include="ViewModels\AddEmployeeViewModel.cs" />
     <Compile Include="ViewModels\EditEmployeeViewModel.cs" />

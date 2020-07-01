@@ -19,13 +19,16 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
         IEmployeeService employeeService;
         IGenderService genderService;
         ISectorService sectorService;
+        EventClass eventObject;
 
         #region Constructor
         public EditEmployeeViewModel(EditEmployee editEmployeeOpen,vwEmployee employeeEdit)
         {
+            eventObject = new EventClass();
             editEmployee = editEmployeeOpen;
             selectedMenager = new vwMenager();
             employee = employeeEdit;
+             
             selctedLocation = new vwLOCATION();
             selectedMenager = new vwMenager();
             //selectedMenager.Menager = employee.MenagerName;
@@ -43,6 +46,12 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
 
             PotentialMenagers = employeeService.GetAllPotentialMenagersForEditWindow(employeeEdit.EmployeeID);
 
+            eventObject.ActionPerformed += ActionPerformed;
+
+            oldEmployee = new vwEmployee();
+            oldEmployee.FirstName = employee.FirstName;
+            oldEmployee.LastName = employee.LastName;
+            oldEmployee.JMBG = employee.JMBG;
         }
 
 
@@ -76,6 +85,9 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
                 OnPropertyChanged("Employee");
             }
         }
+
+        private vwEmployee oldEmployee;
+       
 
         private vwMenager selectedMenager;
         public vwMenager SelectedMenager
@@ -221,12 +233,12 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
                 {
                     vwMenager menagerDB = employeeService.GetMenagerByName(" ");
                     employee.MenagerID = menagerDB.EmployeeID;
-                    MessageBox.Show(employee.MenagerName.ToString());
+                   
                 }
                 else
                 {
                     employee.MenagerID = selectedMenager.EmployeeID;
-                    MessageBox.Show(employee.MenagerName.ToString());
+                  
 
                 }
 
@@ -266,6 +278,10 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
                 employee.GenderID = gender.GenderID;
 
                 isUpdateUser = true;
+
+                string textForFile = String.Format("Updated user {0} {1} JMBG {2} to {3} {4} JMBG {5}", oldEmployee.FirstName,
+                              oldEmployee.LastName, oldEmployee.JMBG, employee.FirstName, employee.LastName, employee.JMBG);
+                eventObject.OnActionPerformed(textForFile);
 
 
                 employeeService.EditEmployee(employee);
@@ -358,7 +374,11 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
             }
         }
 
-
         #endregion
+
+        void ActionPerformed(object source, TextToFileEventArgs args)
+        {
+            FileLogging.texToFile = args.TextForFile;
+        }
     }
 }

@@ -20,10 +20,12 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
         IEmployeeService employeeService;
         IGenderService genderService;
         ISectorService sectorService;
+        EventClass eventObject;
 
         #region Constructor
         public AddEmployeeViewModel(AddEmployee addEmployeeOpen)
         {
+            eventObject = new EventClass();
             selctedLocation = new vwLOCATION();
             selectedMenager = new vwMenager();
             employee = new vwEmployee();
@@ -43,7 +45,7 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
             PotentialMenagers = employeeService.GetAllPotentialMenagers();
 
 
-           
+            eventObject.ActionPerformed += ActionPerformed;
         }
 
 
@@ -261,6 +263,9 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
                   
                 }
 
+                string textForFile = String.Format("Added user {0} {1} JMBG {2}", employee.FirstName,
+                              employee.LastName, employee.JMBG);
+                eventObject.OnActionPerformed(textForFile);
                 employee.GenderID = gender.GenderID;
 
                 isUpdateUser = true;
@@ -358,5 +363,10 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
 
 
         #endregion
+
+        void ActionPerformed(object source, TextToFileEventArgs args)
+        {
+            FileLogging.texToFile = args.TextForFile;
+        }
     }
 }

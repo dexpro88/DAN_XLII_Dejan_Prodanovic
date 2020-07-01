@@ -3,8 +3,10 @@ using DAN_XLII_Dejan_Prodanovic.Services;
 using DAN_XLII_Dejan_Prodanovic.Views;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -17,6 +19,9 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
 
         ILocationService locationService;
         IEmployeeService employeeService;
+        private BackgroundWorker worker;
+        EventClass eventObject = new EventClass();
+
 
         #region Constructor
 
@@ -40,6 +45,18 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
             }
 
             Employees = employeeService.GetAllEmployees();
+
+            worker = new BackgroundWorker();
+            worker.DoWork += DoWork;
+            worker.WorkerReportsProgress = true;
+            worker.WorkerSupportsCancellation = true;
+            worker.RunWorkerCompleted += RunWorkerCompleted;
+
+            worker.RunWorkerAsync();
+
+            eventObject.ActionPerformed += ActionPerformed;
+
+
         }
         #endregion
 
@@ -111,9 +128,13 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
                                 MessageBox.Show("This user is menager to other users. You have to delete them first.");
                                 return;
                             }
+                            string textForFile = String.Format("Deleted user {0} {1} JMBG {2}", employee.FirstName, 
+                                employee.LastName, employee.JMBG);
+                            eventObject.OnActionPerformed(textForFile);
+
                             employeeService.DeleteEmployee(employeeID);
                             Employees = employeeService.GetAllEmployees().ToList();
-
+                            
                             break;
                     }
 
@@ -219,6 +240,53 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
             }
         }
 
+        #endregion
+
+        #region Methods
+        private void DoWork(object sender, DoWorkEventArgs e)
+        {
+            
+
+            while (true)
+            {
+
+                 
+                if (!FileLogging.texToFile.Equals(""))
+                {
+                    FileLogging.LogToFile();
+                }
+                Thread.Sleep(100);
+
+              
+ 
+
+
+                if (worker.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+
+            }
+
+
+        }
+
+        /// <summary>
+        /// method that is executed when BackgroundWorker is completed or canceled
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            
+
+        }
+
+       void ActionPerformed(object source, TextToFileEventArgs args)
+       {
+            FileLogging.texToFile = args.TextForFile;
+       }
         #endregion
     }
 }
