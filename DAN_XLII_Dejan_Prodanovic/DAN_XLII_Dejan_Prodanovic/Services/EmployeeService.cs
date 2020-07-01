@@ -38,14 +38,17 @@ namespace DAN_XLII_Dejan_Prodanovic.Services
             {
                 using (EmployeeDBEntities context = new EmployeeDBEntities())
                 {
+                    
                     tblEmployee employeeToDelete = (from e in context.tblEmployees where e.EmployeeID == employeeID select e).First();
 
+                    MessageBox.Show(employeeToDelete.FirstName);
                     context.tblEmployees.Remove(employeeToDelete);
-
+                    
                     context.SaveChanges();
-
+                    
                     //FileLoging fileLog = FileLoging.Instance();
                     //fileLog.LogDeleteUserToFile(userToDelete);
+
                 }
             }
             catch (Exception ex)
@@ -157,6 +160,85 @@ namespace DAN_XLII_Dejan_Prodanovic.Services
             }
         }
 
-        
+        public vwMenager GetMenagerByName(string name)
+        {
+            try
+            {
+                using (EmployeeDBEntities context = new EmployeeDBEntities())
+                {
+                    vwMenager menager = (from m in context.vwMenagers where m.Menager.Equals(name) select m).First();
+
+
+                    return menager;
+
+                    //FileLoging fileLog = FileLoging.Instance();
+                    //fileLog.LogDeleteUserToFile(userToDelete);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Exception" + ex.Message.ToString());
+                return null;
+            }
+        }
+
+        public tblEmployee AddEmptyMenager()
+        {
+            try
+            {
+                using (EmployeeDBEntities context = new EmployeeDBEntities())
+                {
+                    tblEmployee newEmployee = new tblEmployee();
+
+                    newEmployee.FirstName = "";
+                    newEmployee.LastName = "";
+                  
+                    context.tblEmployees.Add(newEmployee);
+
+                    context.SaveChanges();
+                  
+                    //FileLoging fileLog = FileLoging.Instance();
+                    //fileLog.LogAddIDCardToFile(idCard);
+
+                    
+                    return newEmployee;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Exception" + ex.Message.ToString());
+                return null;
+            }
+        }
+
+        public bool IsMenager(int employeeID)
+        {
+            try
+            {
+                using (EmployeeDBEntities context = new EmployeeDBEntities())
+                {
+                    tblEmployee emloyee = (from e in context.tblEmployees where e.MenagerID==employeeID select e).First();
+
+                    if (emloyee == null)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                     
+
+                    //FileLoging fileLog = FileLoging.Instance();
+                    //fileLog.LogDeleteUserToFile(userToDelete);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Exception" + ex.Message.ToString());
+                return false;
+            }
+        }
     }
 }

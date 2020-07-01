@@ -99,6 +99,11 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
                     switch (result)
                     {
                         case MessageBoxResult.Yes:
+                            if (employeeService.IsMenager(employeeID))
+                            {
+                                MessageBox.Show("This user is menager to other users. You have to delete them first.");
+                                return;
+                            }
                             employeeService.DeleteEmployee(employeeID);
                             Employees = employeeService.GetAllEmployees().ToList();
 

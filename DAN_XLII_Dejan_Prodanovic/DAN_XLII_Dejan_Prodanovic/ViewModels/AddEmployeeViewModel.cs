@@ -1,5 +1,6 @@
 ﻿using DAN_XLII_Dejan_Prodanovic.Commands;
 using DAN_XLII_Dejan_Prodanovic.Services;
+using DAN_XLII_Dejan_Prodanovic.Validations;
 using DAN_XLII_Dejan_Prodanovic.Views;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace DAN_XLII_Dejan_Prodanovic.ViewModels
@@ -23,6 +25,7 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
         public AddEmployeeViewModel(AddEmployee addEmployeeOpen)
         {
             selctedLocation = new vwLOCATION();
+            selectedMenager = new vwMenager();
             employee = new vwEmployee();
             addEmployee = addEmployeeOpen;
 
@@ -35,7 +38,16 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
             LocationList.OrderByDescending(x => x.Location);
             LocationList.Reverse();
 
+            vwMenager firstMenager = employeeService.GetMenagerByName(" ");
+
+            if (firstMenager==null)
+            {
+                employeeService.AddEmptyMenager();
+            }
+
             PotentialMenagers = employeeService.GetAllPotentialMenagers();
+
+
            
         }
 
@@ -181,9 +193,46 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
         {
             try
             {
+
+                if (!ValidationClass.JMBGisValid(employee.JMBG))
+                {
+                    MessageBox.Show("JMBG  is not valid.");
+                    return;
+                }
+
+                if (!ValidationClass.JMBGIsUnique(employee.JMBG))
+                {
+                    MessageBox.Show("JMBG  already exists in database");
+                    return;
+                }
+
+                if (!ValidationClass.RegisterNumberIsValid(employee.RegistrationNumber))
+                {
+                    MessageBox.Show("Registration number  is not valid");
+                    return;
+                }
+                if (!ValidationClass.RegNumberIsUnique(employee.RegistrationNumber))
+                {
+                    MessageBox.Show("Registration number  already exists in database");
+                    return;
+                }
+                if (!ValidationClass.TelfonNumberValid(employee.TelefonNumber))
+                {
+                    MessageBox.Show("Telefon number  is not valid. It must have 9 numbers");
+                    return;
+                }
                 employee.LocationID = SelctedLocation.LocationID;
                 employee.DateOfBirth = StartDate;
-                employee.MenagerID = selectedMenager.EmployeeID;
+                if (String.IsNullOrEmpty(selectedMenager.Menager))
+                {
+                    vwMenager menagerDB = employeeService.GetMenagerByName(" ");
+                    employee.MenagerID = menagerDB.EmployeeID;
+                }
+                else
+                {
+                   employee.MenagerID = selectedMenager.EmployeeID;
+                }
+              
                 string genderForDB;
                
                 if (Gender.Equals("male"))
@@ -204,24 +253,25 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
 
                 if (sectorDB == null)
                 {
-                    MessageBox.Show("SECTOR RADI NESTO");
+                  
                     sectorDB = new tblSector();
                     sectorDB.SectorName = Sector;
                     sectorDB = sectorService.AddSector(sectorDB);
                     employee.SectorID = sectorDB.SectorID;
+
                 }
                 else
                 {
                     employee.SectorID = sectorDB.SectorID;
-                    MessageBox.Show(employee.SectorID.ToString());
+                  
                 }
 
                 employee.GenderID = gender.GenderID;
 
                 isUpdateUser = true;
-            
 
-               //employeeService.AddEmployee(employee);
+
+                employeeService.AddEmployee(employee);
 
                 addEmployee.Close();
 
@@ -235,17 +285,19 @@ namespace DAN_XLII_Dejan_Prodanovic.ViewModels
         private bool CanSaveExecute()
         {
 
-            //if (String.IsNullOrEmpty(idCard.FirstName) || String.IsNullOrEmpty(idCard.JMBG) ||
-            //    String.IsNullOrEmpty(SelctedLocation.Location) || String.IsNullOrEmpty(idCard.LastName)
-            //    || String.IsNullOrEmpty(idCard.Publisher))
-            //{
-            //    return false;
-            //}
-            //else
-            //{
-            //    return true;
-            //}
-            return true;
+            if (String.IsNullOrEmpty(Employee.FirstName) || String.IsNullOrEmpty(Employee.FirstName) || 
+                String.IsNullOrEmpty(Employee.JMBG) || String.IsNullOrEmpty(Employee.RegistrationNumber) ||
+                String.IsNullOrEmpty(Employee.TelefonNumber) || String.IsNullOrEmpty(SelctedLocation.Location) ||
+                String.IsNullOrEmpty(Sector)
+               )
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+            //return true;
         }
 
         private ICommand close;

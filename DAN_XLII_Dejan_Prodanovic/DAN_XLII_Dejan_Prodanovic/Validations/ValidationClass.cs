@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAN_XLII_Dejan_Prodanovic.Validations
 {
-    class Validation
+    class ValidationClass
     {
         static IEmployeeService employeeService = new EmployeeService();
 

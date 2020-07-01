@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DAN_XLII_Dejan_Prodanovic"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="1200">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
@@ -34,8 +34,7 @@
         <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
             <Button Name="btnAddEmployee" Content="Add Employee" Width="80" Height="20"
                 Command="{Binding AddEmployee, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold"/>
-            <Button Name="btnEditEmployee" Content="Edit Employee" Width="100" Height="20"
-                Command="{Binding EditEmployee, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold"/>
+            
         </StackPanel>
         <Grid Grid.Column="1" Grid.Row="3" Height="auto" Width="auto">
             <DataGrid Name="DataGridResults" ItemsSource="{Binding Employees, UpdateSourceTrigger=PropertyChanged}"
@@ -46,8 +45,15 @@
                     <DataGridTextColumn Header="Registration number" Binding="{Binding RegistrationNumber}"/>
                     <DataGridTextColumn Header="First name" Binding="{Binding FirstName}"/>
                     <DataGridTextColumn Header="Last name" Binding="{Binding LastName}"/>
+                    <DataGridTextColumn Header="JMBG" Binding="{Binding JMBG}"/>
                     <DataGridTextColumn Header="Location" Binding="{Binding Location}"/>
-                    <DataGridTextColumn Header="Date of birth" Binding="{Binding DateOfBirth}"/>
+                    <DataGridTextColumn Header="Date of birth" Binding="{Binding DateOfBirth,StringFormat='{}{0:dd/MM/yyyy}'}"/>
+                    <DataGridTextColumn Header="Sector" Binding="{Binding SectorName}"/>
+                    <DataGridTextColumn Header="Telephone" Binding="{Binding TelefonNumber}"/>
+                    <DataGridTextColumn Header="Gender" Binding="{Binding Gender}"/>
+
+
+
                     <DataGridTextColumn Header="Menager" Binding="{Binding MenagerName}"/>
 
 
